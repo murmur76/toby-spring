@@ -5,6 +5,7 @@ import static org.junit.Assert.assertEquals;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.support.GenericXmlApplicationContext;
+import org.springframework.dao.EmptyResultDataAccessException;
 import springbook.user.dao.ConnectionMaker;
 import springbook.user.dao.DConnectionMaker;
 import springbook.user.dao.DaoFactory;
@@ -14,6 +15,16 @@ import springbook.user.domain.User;
 import java.sql.SQLException;
 
 public class UserDaoTest {
+
+    @Test(expected = EmptyResultDataAccessException.class) // 테스트 중에 발생할 것으로 기대하는 예외 클래스를 지정해준다.
+    public void getUserFailure() throws ClassNotFoundException, SQLException {
+        ApplicationContext context = new GenericXmlApplicationContext("applicationContext.xml");
+        UserDao dao = context.getBean("userDao", UserDao.class);
+        dao.deleteAll();
+        assertEquals(dao.getCount(), 0);
+
+        dao.get("unknown_id");
+    }
 
     @Test
     public void addAndGet() throws ClassNotFoundException, SQLException {
