@@ -31,5 +31,10 @@ public class UserDaoTest {
         System.out.println(user2.getPassword());
 
         System.out.println(user2.getId() + " 조회 성공");
+
+        UserDao dao2 = context.getBean("userDao", UserDao.class);
+        UserDao dao3 = context.getBean("userDao", UserDao.class);
+        System.out.println(dao2);
+        System.out.println(dao3);
     }
 }
