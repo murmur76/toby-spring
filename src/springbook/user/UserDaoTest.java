@@ -23,11 +23,7 @@ public class UserDaoTest {
         dao.deleteAll();
         assertEquals(dao.getCount(), 0);
 
-        User user = new User();
-        user.setId("whiteship");
-        user.setName("백기선");
-        user.setPassword("married");
-
+        User user = new User("whiteship", "graham", "kang");
         dao.add(user);
         assertEquals(dao.getCount(), 1);
 
