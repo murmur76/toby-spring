@@ -20,18 +20,20 @@ public class UserDaoTest {
         ApplicationContext context = new GenericXmlApplicationContext("applicationContext.xml");
         UserDao dao = context.getBean("userDao", UserDao.class);
 
+        dao.deleteAll();
+        assertEquals(dao.getCount(), 0);
+
         User user = new User();
         user.setId("whiteship");
         user.setName("백기선");
         user.setPassword("married");
 
         dao.add(user);
-
-        System.out.println(user.getId() + " 등록 성공");
+        assertEquals(dao.getCount(), 1);
 
         User user2 = dao.get(user.getId());
-
         assertEquals(user.getName(), user2.getName());
         assertEquals(user.getPassword(), user2.getPassword());
     }
+
 }
