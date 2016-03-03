@@ -1,25 +1,20 @@
 package springbook.user.dao;
 
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+
 /**
  * Created by graham on 2016. 3. 3..
  */
+
+@Configuration // ApplicationContext 또는 BeanFactory가 사용할 설정정보라는 표시
 public class DaoFactory {
+    @Bean // 오브젝트 생성을 담당하는 IoC용 메소드라는 표시
     public UserDao userDao() {
         return new UserDao(connectionMaker());
     }
 
-    /* ConnectionMaker 구현 클래스를 선정하고 생성하는 코드의 중복
-
-    public AccountDao accountDao() {
-        return new AccountDao(connectionMaker());
-    }
-
-    public MessageDao messageDao() {
-        return new MessageDao(connectionMaker());
-    }
-
-    */
-
+    @Bean
     public ConnectionMaker connectionMaker() {
         return new DConnectionMaker();
     }
