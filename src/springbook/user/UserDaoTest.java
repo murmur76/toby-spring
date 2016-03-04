@@ -18,8 +18,7 @@ import javax.sql.DataSource;
 import java.sql.SQLException;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations="/applicationContext.xml")
-@DirtiesContext // 테스트 메소드에서 UserDao가 컨텍스트의 구성이나 상태를 변경한다는 것을 프레임워크에 알려줌
+@ContextConfiguration(locations="/test-applicationContext.xml")
 public class UserDaoTest {
     @Autowired
     private UserDao dao;
@@ -33,9 +32,6 @@ public class UserDaoTest {
         this.user1 = new User("gyumee", "박성철", "springno1");
         this.user2 = new User("leegw700", "이길원", "springno2");
         this.user3 = new User("bumjin", "박범진", "springno3");
-
-        DataSource dataSource = new SingleConnectionDataSource("jdbc:mysql://localhost/springbook", "spring", "book", true);
-        dao.setDataSource(dataSource);
     }
 
     @Test(expected = EmptyResultDataAccessException.class) // 테스트 중에 발생할 것으로 기대하는 예외 클래스를 지정해준다.
