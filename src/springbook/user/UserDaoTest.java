@@ -6,7 +6,6 @@ import static org.junit.Assert.assertEquals;
 
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -19,16 +18,14 @@ import java.sql.SQLException;
 @ContextConfiguration(locations="/applicationContext.xml")
 public class UserDaoTest {
     @Autowired
-    private ApplicationContext context;
-
     private UserDao dao;
+
     private User user1;
     private User user2;
     private User user3;
 
     @Before
     public void setUp() {
-        this.dao = context.getBean("userDao", UserDao.class);
         this.user1 = new User("gyumee", "박성철", "springno1");
         this.user2 = new User("leegw700", "이길원", "springno2");
         this.user3 = new User("bumjin", "박범진", "springno3");
