@@ -12,6 +12,7 @@ import springbook.user.domain.User;
 
 import javax.sql.DataSource;
 import java.sql.*;
+import java.util.List;
 
 public class UserDao {
     private JdbcTemplate jdbcTemplate;
@@ -34,6 +35,14 @@ public class UserDao {
                         return new User(rs.getString("id"), rs.getString("name"), rs.getString("password"));
                     }
                 });
+    }
+
+    public List<User> getAll() throws SQLException {
+        return jdbcTemplate.query("select * from users order by id", new RowMapper<User>() {
+            public User mapRow(ResultSet rs, int rowNum) throws SQLException {
+                return new User(rs.getString("id"), rs.getString("name"), rs.getString("password"));
+            }
+        });
     }
 
     public void deleteAll() throws SQLException {
