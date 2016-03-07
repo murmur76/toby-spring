@@ -7,6 +7,7 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.core.ResultSetExtractor;
+import org.springframework.jdbc.core.RowMapper;
 import springbook.user.domain.User;
 
 import javax.sql.DataSource;
@@ -26,22 +27,13 @@ public class UserDao {
     }
 
     public User get(final String id) throws ClassNotFoundException, SQLException {
-        return jdbcTemplate.query(new PreparedStatementCreator() {
-            public PreparedStatement createPreparedStatement(Connection connection) throws SQLException {
-                PreparedStatement ps = connection.prepareStatement("select * from users where id = ?");
-                ps.setString(1, id);
-                return ps;
-            }
-        }, new ResultSetExtractor<User>() {
-            public User extractData(ResultSet rs) throws SQLException, DataAccessException {
-                User user = null;
-                if (rs.next()) {
-                    user = new User(rs.getString("id"), rs.getString("name"), rs.getString("password"));
-                }
-                if (user == null) throw new EmptyResultDataAccessException(1);
-                return user;
-            }
-        });
+        return jdbcTemplate.queryForObject("select * from users where id = ?",
+                new Object[] { id },
+                new RowMapper<User>() {
+                    public User mapRow(ResultSet rs, int rowNum) throws SQLException {
+                        return new User(rs.getString("id"), rs.getString("name"), rs.getString("password"));
+                    }
+                });
     }
 
     public void deleteAll() throws SQLException {
@@ -49,12 +41,7 @@ public class UserDao {
     }
 
     public int getCount() throws SQLException {
-        return jdbcTemplate.query("select count(*) from users", new ResultSetExtractor<Integer>() {
-            public Integer extractData(ResultSet rs) throws SQLException, DataAccessException {
-                rs.next();
-                return rs.getInt(1);
-            }
-        });
+        return jdbcTemplate.queryForObject("select count(*) from users", Integer.class);
     }
 
 }
