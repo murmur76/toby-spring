@@ -3,23 +3,23 @@ package springbook.user.dao;
 
 
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.jdbc.core.JdbcTemplate;
 import springbook.user.domain.User;
 
 import javax.sql.DataSource;
 import java.sql.*;
 
 public class UserDao {
-    private JdbcContext jdbcContext;
+    private JdbcTemplate jdbcTemplate;
     private DataSource dataSource;
 
-    public void setJdbcContext(JdbcContext jdbcContext) { this.jdbcContext = jdbcContext; }
-
     public void setDataSource(DataSource dataSource) {
+        this.jdbcTemplate = new JdbcTemplate(dataSource);
         this.dataSource = dataSource;
     }
 
     public void add(final User user) throws ClassNotFoundException, SQLException {
-        jdbcContext.executeSql("insert into users(id, name, password) values(?,?,?)", new Object[]{ user.getId(), user.getName(), user.getPassword() });
+        jdbcTemplate.update("insert into users(id, name, password) values(?,?,?)", new Object[]{ user.getId(), user.getName(), user.getPassword() });
     }
 
     public User get(String id) throws ClassNotFoundException, SQLException {
@@ -44,7 +44,7 @@ public class UserDao {
     }
 
     public void deleteAll() throws SQLException {
-        jdbcContext.executeSql("delete from users", new Object[]{});
+        jdbcTemplate.update("delete from users");
     }
 
     public int getCount() throws SQLException {
