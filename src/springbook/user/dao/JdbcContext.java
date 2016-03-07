@@ -13,7 +13,7 @@ public class JdbcContext {
 
     public void setDataSource(DataSource dataSource) { this.dataSource = dataSource; }
 
-    public void workWithStatementStrategy(StatementStrategy statement) throws SQLException {
+    private void workWithStatementStrategy(StatementStrategy statement) throws SQLException {
         Connection c = null;
         PreparedStatement ps = null;
 
@@ -27,5 +27,17 @@ public class JdbcContext {
             if (ps != null) { try { ps.close(); } catch (SQLException e) { } }
             if (c != null) { try { c.close(); } catch (SQLException e) { } }
         }
+    }
+
+    public void executeSql(final String query, final Object[] escapedParameters) throws SQLException {
+        workWithStatementStrategy(new StatementStrategy() {
+            public PreparedStatement makePreparedStatement(Connection c) throws SQLException {
+                PreparedStatement ps = c.prepareStatement(query);
+                for (int i = 0; i < escapedParameters.length; i++) {
+                    ps.setObject(i + 1, escapedParameters[i]);
+                }
+                return ps;
+            }
+        });
     }
 }
