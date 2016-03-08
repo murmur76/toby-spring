@@ -17,6 +17,11 @@ import java.util.List;
 public class UserDao {
     private JdbcTemplate jdbcTemplate;
     private DataSource dataSource;
+    private RowMapper<User> userMapper = new RowMapper<User>() {
+        public User mapRow(ResultSet rs, int rowNum) throws SQLException {
+            return new User(rs.getString("id"), rs.getString("name"), rs.getString("password"));
+        }
+    };
 
     public void setDataSource(DataSource dataSource) {
         this.jdbcTemplate = new JdbcTemplate(dataSource);
@@ -29,20 +34,11 @@ public class UserDao {
 
     public User get(final String id) throws ClassNotFoundException, SQLException {
         return jdbcTemplate.queryForObject("select * from users where id = ?",
-                new Object[] { id },
-                new RowMapper<User>() {
-                    public User mapRow(ResultSet rs, int rowNum) throws SQLException {
-                        return new User(rs.getString("id"), rs.getString("name"), rs.getString("password"));
-                    }
-                });
+                new Object[] { id }, userMapper);
     }
 
     public List<User> getAll() throws SQLException {
-        return jdbcTemplate.query("select * from users order by id", new RowMapper<User>() {
-            public User mapRow(ResultSet rs, int rowNum) throws SQLException {
-                return new User(rs.getString("id"), rs.getString("name"), rs.getString("password"));
-            }
-        });
+        return jdbcTemplate.query("select * from users order by id", userMapper);
     }
 
     public void deleteAll() throws SQLException {
