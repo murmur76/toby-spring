@@ -33,6 +33,11 @@ public class UserDaoJdbc implements UserDao {
         jdbcTemplate.update("insert into users(id, name, password, level, login, recommend) values(?,?,?,?,?,?)", new Object[]{ user.getId(), user.getName(), user.getPassword(), user.getLevel().intValue(), user.getLogin(), user.getRecommend() });
     }
 
+    public void update(final User user) {
+        jdbcTemplate.update("update users set name=?, password=?, level=?, login=?, recommend=? where id=?", new Object[]{ user.getName(), user.getPassword(), user.getLevel().intValue(), user.getLogin(), user.getRecommend(), user.getId() });
+    }
+
+
     public User get(final String id) {
         return jdbcTemplate.queryForObject("select * from users where id = ?",
                 new Object[] { id }, userMapper);
