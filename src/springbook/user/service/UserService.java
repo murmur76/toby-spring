@@ -23,6 +23,7 @@ public class UserService {
 
     UserDao userDao;
     private DataSource dataSource;
+    private PlatformTransactionManager txManager;
 
     public void setDataSource(DataSource dataSource) {
         this.dataSource = dataSource;
@@ -32,8 +33,11 @@ public class UserService {
         this.userDao = userDao;
     }
 
+    public void setTxManager(PlatformTransactionManager txManager) {
+        this.txManager = txManager;
+    }
+
     public void upgradeLevels() throws Exception {
-        PlatformTransactionManager txManager = new DataSourceTransactionManager(dataSource);
         TransactionStatus txStatus = txManager.getTransaction(new DefaultTransactionDefinition());
 
         try {
