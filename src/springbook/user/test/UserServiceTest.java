@@ -49,6 +49,20 @@ public class UserServiceTest {
     }
 
     @Test
+    public void add() throws Exception {
+        userDao.deleteAll();
+        User userWithLevel = users.get(4);
+        User userWithoutLevel = users.get(0);
+        userWithoutLevel.setLevel(null);
+
+        userService.add(userWithLevel);
+        userService.add(userWithoutLevel);
+
+        assertEquals(userDao.get(userWithLevel.getId()).getLevel(), userWithLevel.getLevel());
+        assertEquals(userDao.get(userWithoutLevel.getId()).getLevel(), Level.BASIC);
+    }
+
+    @Test
     public void upgrateLevel() throws Exception {
         userDao.deleteAll();
         for (User user : users) userDao.add(user);
