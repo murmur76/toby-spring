@@ -7,6 +7,6 @@ import org.junit.runner.JUnitCore;
  */
 public class Application {
     public static void main(String[] args) {
-        JUnitCore.main("springbook.user.UserDaoTest", "springbook.user.UserServiceTest");
+        JUnitCore.main("springbook.user.test.UserDaoTest", "springbook.user.test.UserServiceTest");
     }
 }

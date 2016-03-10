@@ -1,4 +1,4 @@
-package springbook.user;
+package springbook.user.test;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -18,7 +18,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations="/test-applicationContext.xml")
+@ContextConfiguration(locations= "/test-applicationContext.xml")
 public class UserDaoTest {
     @Autowired
     private UserDao dao;

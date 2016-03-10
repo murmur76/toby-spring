@@ -1,4 +1,4 @@
-package springbook.user;
+package springbook.user.test;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -14,7 +14,7 @@ import static org.junit.Assert.assertTrue;
  */
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations="/test-applicationContext.xml" )
+@ContextConfiguration(locations= "/test-applicationContext.xml")
 public class UserServiceTest {
     @Autowired
     UserService userService;
