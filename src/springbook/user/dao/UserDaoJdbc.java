@@ -8,6 +8,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.core.ResultSetExtractor;
 import org.springframework.jdbc.core.RowMapper;
+import springbook.user.domain.Level;
 import springbook.user.domain.User;
 
 import javax.sql.DataSource;
@@ -19,7 +20,7 @@ public class UserDaoJdbc implements UserDao {
     private DataSource dataSource;
     private RowMapper<User> userMapper = new RowMapper<User>() {
         public User mapRow(ResultSet rs, int rowNum) throws SQLException {
-            return new User(rs.getString("id"), rs.getString("name"), rs.getString("password"));
+            return new User(rs.getString("id"), rs.getString("name"), rs.getString("password"), Level.valueOf(rs.getInt("level")), rs.getInt("login"), rs.getInt("recommend"));
         }
     };
 
@@ -29,7 +30,7 @@ public class UserDaoJdbc implements UserDao {
     }
 
     public void add(final User user) {
-        jdbcTemplate.update("insert into users(id, name, password) values(?,?,?)", new Object[]{ user.getId(), user.getName(), user.getPassword() });
+        jdbcTemplate.update("insert into users(id, name, password, level, login, recommend) values(?,?,?,?,?,?)", new Object[]{ user.getId(), user.getName(), user.getPassword(), user.getLevel().intValue(), user.getLogin(), user.getRecommend() });
     }
 
     public User get(final String id) {
