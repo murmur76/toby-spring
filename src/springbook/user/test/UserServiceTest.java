@@ -37,7 +37,7 @@ import static springbook.user.service.UserServiceImpl.MIN_RECOMMEND_FOR_GOLD;
  */
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations= "/test-applicationContext.xml")
+@ContextConfiguration(locations= "/applicationContext.xml")
 public class UserServiceTest {
     @Autowired
     ApplicationContext context;
