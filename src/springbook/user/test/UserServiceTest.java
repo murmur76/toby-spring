@@ -14,6 +14,7 @@ import springbook.user.service.UserServiceImpl;
 import springbook.user.service.UserServiceTx;
 
 import javax.sql.DataSource;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -56,6 +57,32 @@ public class UserServiceTest {
         }
     }
 
+    static class MockUserDao implements UserDao {
+        private List<User> users;
+        private List<User> updatedUsers = new ArrayList<User>();
+
+        private MockUserDao(List<User> users) {
+            this.users = users;
+        }
+
+        public List<User> getUpdatedUsers() {
+            return updatedUsers;
+        }
+
+        public List<User> getAll() {
+            return this.users;
+        }
+
+        public void update(User user) {
+            updatedUsers.add(user);
+        }
+
+        public void add(User user) { throw new UnsupportedOperationException(); }
+        public void deleteAll() { throw new UnsupportedOperationException(); }
+        public User get(String id) { throw new UnsupportedOperationException(); }
+        public int getCount() { throw new UnsupportedOperationException(); }
+    }
+
     static class TestUserServiceException extends RuntimeException {}
 
     @Before
@@ -90,15 +117,16 @@ public class UserServiceTest {
 
     @Test
     public void upgradeLevel() throws Exception {
-        userDao.deleteAll();
-        for (User user : users) userDao.add(user);
-        userService.upgradeLevels();
+        UserServiceImpl userServiceImpl = new UserServiceImpl();
+        MockUserDao mockUserDao = new MockUserDao(this.users);
+        userServiceImpl.setUserDao(mockUserDao);
 
-        checkLevelUpgraded(users.get(0), false);
-        checkLevelUpgraded(users.get(1), true);
-        checkLevelUpgraded(users.get(2), false);
-        checkLevelUpgraded(users.get(3), true);
-        checkLevelUpgraded(users.get(4), false);
+        userServiceImpl.upgradeLevels();
+
+        List<User> updatedUsers = mockUserDao.getUpdatedUsers();
+        checkUserAndLevel(updatedUsers.get(0), "joytouch", Level.SILVER);
+        checkUserAndLevel(updatedUsers.get(1), "madnitel", Level.GOLD);
+
     }
 
     @Test
@@ -126,5 +154,10 @@ public class UserServiceTest {
         User updatedUser = userDao.get(user.getId());
         if (upgraded) assertTrue(updatedUser.getLevel() == user.getLevel().nextLevel());
         else assertTrue(updatedUser.getLevel() == user.getLevel());
+    }
+
+    private void checkUserAndLevel(User user, String expectedId, Level expectedLevel) {
+        assertEquals(user.getId(), expectedId);
+        assertEquals(user.getLevel(), expectedLevel);
     }
 }
