@@ -3,22 +3,18 @@ package springbook.user.test;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.aop.framework.ProxyFactoryBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.transaction.PlatformTransactionManager;
 import springbook.user.dao.UserDao;
 import springbook.user.domain.Level;
 import springbook.user.domain.User;
-import springbook.user.service.TransactionHandler;
-import springbook.user.service.TxProxyFactoryBean;
 import springbook.user.service.UserService;
 import springbook.user.service.UserServiceImpl;
 
-import javax.sql.DataSource;
-import java.lang.reflect.Proxy;
 import java.util.Arrays;
 import java.util.List;
 
@@ -43,16 +39,10 @@ public class UserServiceTest {
     ApplicationContext context;
 
     @Autowired
-    UserServiceImpl userService;
+    UserService userService;
 
     @Autowired
     UserDao userDao;
-
-    @Autowired
-    DataSource dataSource;
-
-    @Autowired
-    PlatformTransactionManager txManager;
 
     List<User> users;
 
@@ -123,9 +113,9 @@ public class UserServiceTest {
         UserServiceImpl testUserService =  new TestUserService(users.get(3).getId());
         testUserService.setUserDao(this.userDao);
 
-        TxProxyFactoryBean txProxyFactoryBean = context.getBean("&userService", TxProxyFactoryBean.class);
-        txProxyFactoryBean.setTarget(testUserService);
-        UserService txUserService = (UserService) txProxyFactoryBean.getObject();
+        ProxyFactoryBean proxyFactoryBean = context.getBean("&userService", ProxyFactoryBean.class);
+        proxyFactoryBean.setTarget(testUserService);
+        UserService txUserService = (UserService) proxyFactoryBean.getObject();
         userDao.deleteAll();
         for (User user : users) userDao.add(user);
 
