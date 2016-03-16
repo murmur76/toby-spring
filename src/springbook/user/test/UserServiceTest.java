@@ -42,16 +42,15 @@ public class UserServiceTest {
     UserService userService;
 
     @Autowired
+    UserService testUserService;
+
+    @Autowired
     UserDao userDao;
 
     List<User> users;
 
-    static class TestUserService extends UserServiceImpl {
-        private String id;
-
-        private TestUserService(String id) {
-            this.id = id;
-        }
+    static class TestUserServiceImpl extends UserServiceImpl {
+        private String id = "madnitel";
 
         protected void upgradeLevel(User user) {
             if (user.getId().equals(this.id)) throw new TestUserServiceException();
@@ -108,19 +107,12 @@ public class UserServiceTest {
     }
 
     @Test
-    @DirtiesContext
     public void upgradeAllOrNothing() throws Exception {
-        UserServiceImpl testUserService =  new TestUserService(users.get(3).getId());
-        testUserService.setUserDao(this.userDao);
-
-        ProxyFactoryBean proxyFactoryBean = context.getBean("&userService", ProxyFactoryBean.class);
-        proxyFactoryBean.setTarget(testUserService);
-        UserService txUserService = (UserService) proxyFactoryBean.getObject();
         userDao.deleteAll();
         for (User user : users) userDao.add(user);
 
         try {
-            txUserService.upgradeLevels();
+            this.testUserService.upgradeLevels();
         } catch (TestUserServiceException e) {
 
         }
