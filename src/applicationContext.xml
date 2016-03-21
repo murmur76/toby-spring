@@ -42,5 +42,7 @@
         </tx:attributes>
     </tx:advice>
 
+    <tx:annotation-driven/>
+
     <bean id="testUserService" class="springbook.user.test.UserServiceTest$TestUserServiceImpl" parent="userService" />
 </beans>
