@@ -3,6 +3,7 @@ package springbook.user;
 import org.gjt.mm.mysql.Driver;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
@@ -26,6 +27,7 @@ import javax.sql.DataSource;
  */
 @Configuration
 @EnableTransactionManagement
+@ComponentScan(basePackages="springbook.user")
 public class ApplicationContext {
     @Bean
     public DataSource dataSource() {
@@ -42,16 +44,6 @@ public class ApplicationContext {
         DataSourceTransactionManager tm = new DataSourceTransactionManager();
         tm.setDataSource(dataSource());
         return tm;
-    }
-
-    @Bean
-    public UserDao userDao() {
-        return new UserDaoJdbc();
-    }
-
-    @Bean
-    public UserService userService() {
-        return new UserServiceImpl();
     }
 
     @Bean

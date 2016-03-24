@@ -3,6 +3,7 @@ package springbook.user.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.jdbc.datasource.DataSourceUtils;
+import org.springframework.stereotype.Component;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.DefaultTransactionDefinition;
@@ -18,6 +19,7 @@ import java.util.List;
 /**
  * Created by graham on 2016. 3. 10..
  */
+@Component("userService")
 public class UserServiceImpl implements UserService {
     public static final int MIN_LOGIN_FOR_SILVER = 50;
     public static final int MIN_RECOMMEND_FOR_GOLD = 30;
