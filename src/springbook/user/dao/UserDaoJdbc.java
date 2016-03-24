@@ -15,7 +15,7 @@ import java.util.List;
 public class UserDaoJdbc implements UserDao {
     private JdbcTemplate jdbcTemplate;
     private SqlService sqlService;
-    public void setSqlMap(SqlService sqlService) {
+    public void setSqlService(SqlService sqlService) {
         this.sqlService = sqlService;
     }
     private DataSource dataSource;
