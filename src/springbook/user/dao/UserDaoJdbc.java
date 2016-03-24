@@ -2,6 +2,7 @@ package springbook.user.dao;
 
 
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import springbook.user.domain.Level;
@@ -14,10 +15,8 @@ import java.util.List;
 
 public class UserDaoJdbc implements UserDao {
     private JdbcTemplate jdbcTemplate;
-    private SqlService sqlService;
-    public void setSqlService(SqlService sqlService) {
-        this.sqlService = sqlService;
-    }
+    @Autowired private SqlService sqlService;
+
     private DataSource dataSource;
     private RowMapper<User> userMapper = new RowMapper<User>() {
         public User mapRow(ResultSet rs, int rowNum) throws SQLException {
@@ -25,6 +24,7 @@ public class UserDaoJdbc implements UserDao {
         }
     };
 
+    @Autowired
     public void setDataSource(DataSource dataSource) {
         this.jdbcTemplate = new JdbcTemplate(dataSource);
         this.dataSource = dataSource;

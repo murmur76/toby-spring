@@ -1,5 +1,6 @@
 package springbook.user.service;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.jdbc.datasource.DataSourceUtils;
 import org.springframework.transaction.PlatformTransactionManager;
@@ -21,7 +22,7 @@ public class UserServiceImpl implements UserService {
     public static final int MIN_LOGIN_FOR_SILVER = 50;
     public static final int MIN_RECOMMEND_FOR_GOLD = 30;
 
-    UserDao userDao;
+    @Autowired UserDao userDao;
 
     public void setUserDao(UserDao userDao) {
         this.userDao = userDao;

@@ -44,29 +44,19 @@ public class ApplicationContext {
         return tm;
     }
 
-    @Autowired
-    SqlService sqlService;
-
     @Bean
     public UserDao userDao() {
-        UserDaoJdbc dao = new UserDaoJdbc();
-        dao.setDataSource(dataSource());
-        dao.setSqlService(sqlService);
-        return dao;
+        return new UserDaoJdbc();
     }
 
     @Bean
     public UserService userService() {
-        UserServiceImpl service = new UserServiceImpl();
-        service.setUserDao(userDao());
-        return service;
+        return new UserServiceImpl();
     }
 
     @Bean
     public UserService testUserService() {
-        TestUserServiceImpl testUserService = new TestUserServiceImpl();
-        testUserService.setUserDao(userDao());
-        return testUserService;
+        return new TestUserServiceImpl();
     }
 
     @Bean
