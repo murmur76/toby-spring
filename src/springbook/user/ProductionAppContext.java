@@ -7,19 +7,20 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.jdbc.datasource.SimpleDriverDataSource;
 import org.springframework.transaction.PlatformTransactionManager;
-import springbook.user.service.UserService;
-import springbook.user.test.UserServiceTest;
 
 import javax.sql.DataSource;
 
+/**
+ * Created by graham on 2016. 3. 24..
+ */
 @Configuration
-@Profile("test")
-public class TestAppContext {
+@Profile("production")
+public class ProductionAppContext {
     @Bean
     public DataSource dataSource() {
         SimpleDriverDataSource ds = new SimpleDriverDataSource();
         ds.setDriverClass(Driver.class);
-        ds.setUrl("jdbc:mysql://localhost/springbook?characterEncoding=UTF-8");
+        ds.setUrl("jdbc:mysql://localhost/production?characterEncoding=UTF-8");
         ds.setUsername("spring");
         ds.setPassword("book");
         return ds;
@@ -32,8 +33,4 @@ public class TestAppContext {
         return tm;
     }
 
-    @Bean
-    public UserService testUserService() {
-        return new UserServiceTest.TestUserServiceImpl();
-    }
 }

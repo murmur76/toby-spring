@@ -29,23 +29,7 @@ import javax.sql.DataSource;
 @Configuration
 @EnableTransactionManagement
 @ComponentScan(basePackages="springbook.user")
-@Import(SqlServiceContext.class)
+@Import({SqlServiceContext.class, TestAppContext.class, ProductionAppContext.class})
 public class ApplicationContext {
-    @Bean
-    public DataSource dataSource() {
-        SimpleDriverDataSource ds = new SimpleDriverDataSource();
-        ds.setDriverClass(Driver.class);
-        ds.setUrl("jdbc:mysql://localhost/springbook?characterEncoding=UTF-8");
-        ds.setUsername("spring");
-        ds.setPassword("book");
-        return ds;
-    }
-
-    @Bean
-    public PlatformTransactionManager transactionManager() {
-        DataSourceTransactionManager tm = new DataSourceTransactionManager();
-        tm.setDataSource(dataSource());
-        return tm;
-    }
 
 }
