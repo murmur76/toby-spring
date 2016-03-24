@@ -28,7 +28,7 @@
     <bean id="userService" class="springbook.user.service.UserServiceImpl">
         <property name="userDao" ref="userDao" />
     </bean>
-    <bean id="sqlService" class="springbook.user.service.SimpleSqlService">
+    <bean id="sqlService" class="springbook.user.sqlservice.SimpleSqlService">
         <property name="sqlMap">
             <map>
                 <entry key="addSql" value="insert into users(id, name, password, level, login, recommend) values(?,?,?,?,?,?)" />

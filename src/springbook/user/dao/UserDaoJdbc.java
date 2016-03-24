@@ -2,15 +2,11 @@ package springbook.user.dao;
 
 
 
-import org.springframework.dao.DataAccessException;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.PreparedStatementCreator;
-import org.springframework.jdbc.core.ResultSetExtractor;
 import org.springframework.jdbc.core.RowMapper;
 import springbook.user.domain.Level;
 import springbook.user.domain.User;
-import springbook.user.service.SqlService;
+import springbook.user.sqlservice.SqlService;
 
 import javax.sql.DataSource;
 import java.sql.*;

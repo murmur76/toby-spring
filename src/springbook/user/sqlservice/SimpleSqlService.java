@@ -1,4 +1,4 @@
-package springbook.user.service;
+package springbook.user.sqlservice;
 
 import java.util.Map;
 
