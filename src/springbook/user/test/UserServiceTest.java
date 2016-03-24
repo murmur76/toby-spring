@@ -5,10 +5,10 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.aop.framework.ProxyFactoryBean;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import springbook.user.ApplicationContext;
 import springbook.user.dao.UserDao;
 import springbook.user.domain.Level;
 import springbook.user.domain.User;
@@ -33,7 +33,7 @@ import static springbook.user.service.UserServiceImpl.MIN_RECOMMEND_FOR_GOLD;
  */
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations= "/applicationContext.xml")
+@ContextConfiguration(classes=ApplicationContext.class)
 public class UserServiceTest {
     @Autowired
     ApplicationContext context;
@@ -49,7 +49,7 @@ public class UserServiceTest {
 
     List<User> users;
 
-    static class TestUserServiceImpl extends UserServiceImpl {
+    public static class TestUserServiceImpl extends UserServiceImpl {
         private String id = "madnitel";
 
         protected void upgradeLevel(User user) {
