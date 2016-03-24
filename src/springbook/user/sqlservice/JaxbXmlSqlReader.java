@@ -10,7 +10,9 @@ import javax.xml.bind.Unmarshaller;
 import java.io.InputStream;
 
 public class JaxbXmlSqlReader implements SqlReader {
-    private String sqlmapFile;
+    private static final String DEFAULT_SQKMAP_FILE = "sqlmap.xml";
+
+    private String sqlmapFile = DEFAULT_SQKMAP_FILE;
 
     public void setSqlmapFile(String sqlmapFile) {
         this.sqlmapFile = sqlmapFile;
