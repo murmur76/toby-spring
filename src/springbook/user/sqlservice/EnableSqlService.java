@@ -1,7 +1,7 @@
 package springbook.user.sqlservice;
 
 import org.springframework.context.annotation.Import;
-import springbook.user.SqlServiceContext;
+import springbook.SqlServiceContext;
 
 /**
  * Created by graham on 2016. 3. 31..

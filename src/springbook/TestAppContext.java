@@ -1,38 +1,44 @@
-package springbook.user;
+package springbook;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import org.springframework.core.env.Environment;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.jdbc.datasource.SimpleDriverDataSource;
 import org.springframework.transaction.PlatformTransactionManager;
+import springbook.user.service.UserService;
+import springbook.user.test.UserServiceTest;
 
 import javax.sql.DataSource;
+import java.sql.Driver;
 
-/**
- * Created by graham on 2016. 3. 24..
- */
 @Configuration
-@Profile("production")
+@Profile("test")
 @PropertySource("classpath:/springbook/user/database.properties")
-public class ProductionAppContext {
-    @Autowired Environment env;
+public class TestAppContext {
+    @Value("${db.driverClass}") Class<? extends Driver> driverClass;
+    @Value("${db.url}") String url;
+    @Value("${db.username}") String username;
+    @Value("${db.password}") String password;
+
+    @Bean
+    public static PropertySourcesPlaceholderConfigurer placeholderConfigurer() {
+        return new PropertySourcesPlaceholderConfigurer();
+    }
 
     @Bean
     public DataSource dataSource() {
         SimpleDriverDataSource ds = new SimpleDriverDataSource();
 
-        try {
-            ds.setDriverClass((Class<? extends java.sql.Driver>)Class.forName(env.getProperty("db.driverClass")));
-        } catch (ClassNotFoundException e) {
-            throw new RuntimeException(e);
-        }
-        ds.setUrl(env.getProperty("db.url"));
-        ds.setUsername(env.getProperty("db.username"));
-        ds.setPassword(env.getProperty("db.password"));
+        ds.setDriverClass(this.driverClass);
+        ds.setUrl(this.url);
+        ds.setUsername(this.username);
+        ds.setPassword(this.password);
         return ds;
     }
 
@@ -43,4 +49,8 @@ public class ProductionAppContext {
         return tm;
     }
 
+    @Bean
+    public UserService testUserService() {
+        return new UserServiceTest.TestUserServiceImpl();
+    }
 }
